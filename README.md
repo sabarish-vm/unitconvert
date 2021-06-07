@@ -2,7 +2,7 @@
 
 ## Overview
  
-The package contains modules which will convert the desired Physical units given as astropy.units.Quantity object to Natural units. Here, natural units refer to the unit system where $\hbar = c = k_B = \epsilon_0 = 1$. Hopefully in the future, this will be extended to include even custom unit systems.
+The package contains modules which will convert the desired Physical units given as astropy.units.Quantity object to Natural units. Here, natural units refer to the unit system where ℏ = *k*<sub>*B*</sub> = *c* = *ϵ*<sub>0</sub> = 1. Hopefully in the future, this will be extended to include even custom unit systems.
 
 ## Key Modules
 
