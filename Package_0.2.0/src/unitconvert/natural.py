@@ -1,4 +1,4 @@
-from getdimensions import *
+from unitconvert.getdimensions import *
 import astropy.units as u
 import astropy.constants as acon
 from collections import defaultdict
