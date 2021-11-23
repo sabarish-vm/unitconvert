@@ -10,11 +10,12 @@ The previous versions are obselete, and does not have enough functionality and a
 
 ## Overview
  
-The package contains modules which will convert the desired units given as astropy.units.Quantity object to physical units like natural units, geometrized units, and cgs gaussian units. Here, natural units refer to the unit system where $\hbar = c = k_B = \epsilon_0 = 1$, geometrized units refer to $c = G = 1$, cgs gaussian refers to $ 4\pi\epsilon_0 = 1$. 
+The package contains modules which will convert the desired units given as astropy.units.Quantity object to physical units like natural units, geometrized units, and cgs gaussian units. Here, natural units refer to the unit system where ℏ = *c* = *k*<sub>*B*</sub> = *ϵ*<sub>0</sub> = 1, geometrized units refer to *c* = *G* = 1, cgs gaussian refers to 4*π*ϵ<sub>0</sub> = 1  
+
 
 ## Key Modules in unitconvert.natural 
 
-There are two key modules **toNaturalunits(q)** , and **fromNaturalunits(q,des_units)**.
+There are two key modules **toNaturalunits(q)** , and **fromNaturalunits(q,required_units)**.
 
 ### Example
 	from unitconvert.natural import *
@@ -30,17 +31,17 @@ We can revert back to S.I. units as follows,
 
 We can also find the factor that will the restore the constants which were set to 1 in a given analytic expression. This is illustrated with the example below,
 
-Consider the equation $E = m c^2$, in natural units it becomes $E=m$, now to restore the units using the package follow the given recipe, find the factor of each variable in the equation using the function factorNatural(quantity), and divide the same variable with output. i.e. in our example we have for the rhs the quantity mass which has the units kg,
+Consider the equation *E* = *m* *c*<sup>2</sup>, in natural units it becomes *E* = *m*, now to restore the units using the package follow the given recipe, find the factor of each variable in the equation using the function factorNatural(quantity), and divide the same variable with output. i.e. in our example we have for the rhs the quantity mass which has the units kg,
 
     In : factorNatural(u.kg)
     Out : {'hbar': 0.0, 'c': -2.0, 'k_B': 0, 'eps0': 0.0}
 
-Thus you will divide m by $c^{-2}$, to get $m c ^2$. Similarly for LHS we get,
+Thus you will divide *m* by *c* <sup>2</sup>, to get *m* *c* <sup>2</sup>. Similarly for LHS we get,
 
     In : factorNatural(u.eV)
     Out : {'hbar': 0.0, 'c': 0.0, 'k_B': 0, 'eps0': 0.0}
 
-Here there factor is just 1, thus we get the equation with restored constants as $E = m c^2$
+Here there factor is just 1, thus we get the equation with restored constants as *E* = *m* *c*<sup>2</sup>
 
 ## Geometrized and CGS Gaussian unit systems 
 
