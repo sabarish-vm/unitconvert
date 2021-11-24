@@ -36,7 +36,7 @@ Consider the equation *E* = *m* *c*<sup>2</sup>, in natural units it becomes
     In : factorNatural(u.kg)
     Out : {'hbar': 0.0, 'c': -2.0, 'k_B': 0, 'eps0': 0.0}
 
-Thus you will divide *m* by *c* <sup>2</sup>, to get *m* *c* <sup>2</sup>. Similarly for LHS we get,
+Thus you will divide *m* by *c* <sup>-2</sup>, to get *m* *c* <sup>2</sup>. Similarly for LHS we get,
 
     In : factorNatural(u.eV)
     Out : {'hbar': 0.0, 'c': 0.0, 'k_B': 0, 'eps0': 0.0}
