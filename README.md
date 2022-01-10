@@ -1,3 +1,16 @@
+# Installation instructions
+
+``` Shell
+pip install numpy astropy
+```
+``` Shell
+pip install -i https://test.pypi.org/simple/ unitconvert-pkg
+```
+
+
+
+
+
 # Units Convert Package
 
 ## Changes from 0.2.1 to 0.2.2
