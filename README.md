@@ -14,7 +14,7 @@ After cloning or downloading the desired verion `v0.x.y` do the following,
 pip install numpy astropy
 ```
 ``` Shell
-cd v.0.x.y
+cd v0.x.y
 pip install .
 ```
 
