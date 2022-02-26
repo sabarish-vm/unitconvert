@@ -7,6 +7,17 @@ pip install numpy astropy
 pip install -i https://test.pypi.org/simple/ unitconvert-pkg
 ```
 
+OR
+
+After cloning or downloading the desired verion `v0.x.y` do the following,  
+``` Shell
+pip install numpy astropy
+```
+``` Shell
+cd v.0.x.y
+pip install .
+```
+
 
 
 
