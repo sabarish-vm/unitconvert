@@ -15,7 +15,7 @@ pip install numpy astropy
 ```
 ``` Shell
 cd v0.x.y
-pip install .
+pip install -e .
 ```
 
 
@@ -23,6 +23,10 @@ pip install .
 
 
 # Units Convert Package
+
+## What's new ?
+
+Support for custom unit systems ! The user can specify the set basis units, and conversions from and to this system can be done using the functions `create_units`, and `load_units`
 
 ## Changes from 0.2.1 to 0.2.2
 Included planck units ! 

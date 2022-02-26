@@ -14,6 +14,30 @@ Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
+# Installation instructions
+
+``` Shell
+pip install numpy astropy
+```
+``` Shell
+pip install -i https://test.pypi.org/simple/ unitconvert-pkg
+```
+
+OR
+
+After cloning or downloading the desired verion `v0.x.y` do the following,  
+``` Shell
+pip install numpy astropy
+```
+``` Shell
+cd v0.x.y
+pip install -e .
+```
+
+
+
+
+
 # Units Convert Package
 
 ## Changes from 0.2.1 to 0.2.2
