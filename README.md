@@ -1,15 +1,19 @@
 # Installation instructions
 
+## Latest version : Pip install from git
+It is the easiest method to get it installed.
+``` Shell
+pip install git+https://github.com/Sabb95/unitconvert.git 
+```
+## Old version v=x.y.z : Pip install from pypi
+
 ``` Shell
 pip install numpy astropy
-```
-``` Shell
-pip install -i https://test.pypi.org/simple/ unitconvert-pkg
+pip install -i https://test.pypi.org/simple/ unitconvert-pkg==x.y.z
 ```
 
-OR
-
-After cloning or downloading the desired verion `v0.x.y` do the following,  
+## Old version v=x.y.z : Pip install from git
+After cloning or downloading the desired verion `x.y.z` do the following,  
 ``` Shell
 pip install numpy astropy
 ```
@@ -17,10 +21,6 @@ pip install numpy astropy
 cd v0.x.y
 pip install -e .
 ```
-
-
-
-
 
 # Units Convert Package
 
