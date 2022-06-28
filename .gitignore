@@ -2,5 +2,6 @@
 docs/_build/
 
 # Python packaging
-**/__pycache__/
+__pycache__/
 *.egg-info/
+dist/
