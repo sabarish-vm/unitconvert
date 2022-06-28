@@ -3,7 +3,7 @@
 ## Latest version : Pip install from git
 It is the easiest method to get it installed.
 ``` Shell
-pip install git+https://github.com/Sabb95/unitconvert.git 
+pip install git+https://github.com/sabarish-vm/unitconvert.git 
 ```
 ## Old version v=x.y.z : Pip install from pypi
 
