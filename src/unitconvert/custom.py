@@ -23,29 +23,21 @@ def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labe
     '''
     Creates a new unit system and saves them in current working directory or inside a global directory. This saved system can be accessed later.    
 
-    Parameters :
-    -----------
-    constants : list
-                A list of astropy constants that needs to be used as the basis unit or in other words the physical constants that needs to be set to 1.
+    Args :
+            **constants (list)** : A list of astropy constants that needs to be used as the basis unit or in other words the physical constants that needs to be set to 1.
 
-    units : list 
-            A list of astropy units in which the results must be returned in, to avoid ambiguity this must be passed by the user.
+            **units (list)** : A list of astropy units in which the results must be returned in, to avoid ambiguity this must be passed by the user.
 
-    name :  str
-            The name of the unit system
+            **name (str)** The name of the unit system
         
-    save :  str
-            'local' to save the unit system in the current working directory
-            'global' to save it in a global directory in the home of the user
+            **save (str)** :  `'local'` to save the unit system in the current working directory `'global'` to save it in a global directory in the home of the user
 
-    overwrite : str
-                'yes' to overwrite the existing unit system with a given name if it exists
-                'no' to not to overwrite the existing unit system
+            **overwrite (str)** : `'yes'` to overwrite the existing unit system with a given name if it exists `'no'` to not to overwrite the existing unit system
     
-    labels :   list (optional)
-                A list of strings corresponding to each physical constant that serves as a symbol for that constant. It is useful when one uses not the inbuilt astropy constants but defines ones own constants.
-
-           
+            **labels (list)** : A list of strings corresponding to each physical constant that serves as a symbol for that constant. It is useful when one uses not the inbuilt astropy constants but defines ones own constants.  
+    
+    Returns :
+            None         
     '''
 
     from sympy.solvers.solveset import linsolve
@@ -144,21 +136,19 @@ def load_units(name, save = 'local'):
     '''
     Loading saved unit system
 
-    Parameters :
-    ------------
-
-    name :  str
-            The name of the unit system that has to be loaded
-    save :  str
-            'local' : to load the unit system saved in the current working directory
-            'global' : to load the unit system saved in the global directory (home directory of the user)
+    Args :
+            **name (str)** : The name of the unit system that has to be loaded
+            
+            **save (str)** : `'local'` : to load the unit system saved in the current working directory `'global'` : to load the unit system saved in the global directory (home directory of the user)
 
     Returns :
-    ---------
-    The function returns three functions with three functionalities
-    1) Convert SI to New unit system
-    2) Convert from New unit system to SI
-    3) Get the conversion factor
+        The function returns three functions with three functionalities
+
+        **1)** function that converts from SI to the New unit system
+
+        **2)** function that converts from the New unit system to SI
+
+        **3)** function to returns the conversion factor
     '''
 
     if save == 'global' :

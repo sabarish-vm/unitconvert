@@ -4,7 +4,21 @@ import astropy.constants as acon
 from collections import defaultdict
 
 def factorPlanck(q):
-    # [acon.c, acon.hbar, acon.k_B, acon.eps0, acon.G]
+    """ 
+    Find the conversion factor that is used to convert the given quantity q to and from Planck units and SI units 
+
+    Args :
+            **q (astropy quantity)** : the quantity for which unit conversion must be done
+    
+    Returns :
+            **(dictionary)** : the conversion factor in terms of :math:`c, \hbar, \epsilon_0, k_B,G`
+
+    Example :
+            >>> from unitconvert.planck import factorPlanck
+            >>> from astropy import units as u
+            >>> factorPlanck(1*u.m)
+            {'c': -1.5, 'hbar': 0.5, 'k_B': 0, 'eps0': 0.0, 'G': 0.5}
+    """
     dimdict = getdim(q.si)
     a = dimdict[u.kg]
     b = dimdict[u.m]
@@ -15,6 +29,21 @@ def factorPlanck(q):
     return factorlist
 
 def toPlanck(q) :
+    """ 
+    Convert the given astropy quantity `q` in SI units to Planck units
+
+    Args :
+            **q (astropy quantity)** : the quantity which needs to be converted
+    
+    Returns :
+            **(astropy quantity)** : the input quantity `q` in Planck units
+
+    Example :
+            >>> from unitconvert.planck import toPlanck
+            >>> from astropy import units as u
+            >>> toPlanck(1*u.m)
+            <Quantity 6.18714241e+34>
+    """
     q = q.si
     dimdict = getdim(q.si)
     a = dimdict[u.kg]
@@ -34,7 +63,26 @@ def toPlanck(q) :
         return 'Cannot Convert'
 
 def fromPlanck(q,finalUnits) :
-    fac = factorNatural(finalUnits)
+    """ 
+    Convert the given astropy quantity `q` in Planck units to SI units
+
+    Args :
+            **q (astropy quantity)** : the quantity which needs to be converted
+
+            **finalUnits (astropy quantity)** : the base units to which quantity needs to be converted back.
+
+            All fundamental quantities are unit less in Planck units. Therefore we need to specify the SI unit to which we need to convert it back to.
+    
+    Returns :
+            **(astropy quantity)** : the input quantity `q` in SI units
+
+    Example :
+            >>> from unitconvert.planck import fromPlanck
+            >>> from astropy import units as u
+            >>> fromPlanck(6.18714241e+34,u.m)
+            <Quantity 1. m>
+    """
+    fac = factorPlanck(finalUnits)
     factor = acon.hbar**(fac['hbar']) * acon.c**(fac['c']) * acon.k_B**(fac['k_B']) * acon.eps0**(fac['eps0']) * acon.G**(fac['G'])
     try :
         return (q*factor).to(finalUnits)
