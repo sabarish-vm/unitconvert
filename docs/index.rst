@@ -15,6 +15,7 @@ Welcome to UnitConvert's documentation!
    geometrized.rst
    gaussian.rst
    custom.rst
+   gadget.rst
 
 Indices and tables
 ==================
