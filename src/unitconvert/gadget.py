@@ -1,10 +1,22 @@
 from unitconvert.getdimensions import getdim
 import astropy.units as u
 
+print("You are importing Gadget-2 units. For more information \
+about the unit system have a look at Gadget-2 user manual\
+online. Gadget-2 defines mass(gM), length(gL), and velocity(gV) as \
+fundamental units. Therefore time(gT) is a derived unit. \
+The units are also defined in terms of hubble parameter.\
+This is neglected here for reasons explained in the manual.\
+Remember to the graviational constant(gG) as well, when doing calculations.\
+That is, import gM,gL,gT,gV,gG from this module \
+"
+)
+
 gM = u.def_unit('gM',1.989e43*u.g)
 gL = u.def_unit('gL',3.085678e21*u.cm)
 gV = u.def_unit('gV',1e5*u.cm/u.s)
 gT = u.def_unit('gT',3.085678e16*u.s)
+gG = 6.6743e-8*u.cm**3/u.g/u.s**2
 
 def toGadget(q):
     """ 
