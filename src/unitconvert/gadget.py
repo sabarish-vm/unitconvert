@@ -1,9 +1,10 @@
 from unitconvert.getdimensions import getdim
 import astropy.units as u
 
-gM = u.def_unit('gM',10**10 * u.solMass)
-gL = u.def_unit('gL',1*u.kpc)
-gT = u.def_unit('gT',9.8*10**8 *u.yr)
+gM = u.def_unit('gM',1.989e43*u.g)
+gL = u.def_unit('gL',3.085678e21*u.cm)
+gV = u.def_unit('gV',1e5*u.cm/u.s)
+gT = u.def_unit('gT',3.085678e16*u.s)
 
 def toGadget(q):
     """ 

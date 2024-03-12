@@ -24,7 +24,10 @@ pip install -e .
 
 # Units Convert Package
 
-## What's new ?
+## What's new in 0.2.3 ?
+Included units used in the $N$-body code `GADGET-2`.
+
+## Changes from 0.2.2 to 0.2.3
 
 Support for custom unit systems ! The user can specify the set basis units, and conversions from and to this system can be done using the functions `create_units`, and `load_units`
 
