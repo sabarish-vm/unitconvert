@@ -18,11 +18,22 @@ After cloning or downloading the desired verion `x.y.z` do the following,
 pip install numpy astropy
 ```
 ``` Shell
+git checkout old_versions
 cd v0.x.y
 pip install -e .
 ```
 
 # Units Convert Package
+
+## What's new in 0.2.4 ?
+Transform units to any standard unit like cgs, si, astronomical. The desired target set must be specified as a list.
+
+Example :
+
+    >>> from unitconvert.unitsystem import toSystem
+    >>> from astropy import units as u
+    >>> toSystem(1 * u.pc *u.A,[u.kpc,u.solMass,u.yr])
+    <Quantity 0.001 A kpc>
 
 ## What's new in 0.2.3 ?
 Included units used in the $N$-body code `GADGET-2`.
