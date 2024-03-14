@@ -1,18 +1,10 @@
 # Installation instructions
 
-## Latest version : Pip install from git
-It is the easiest method to get it installed.
+## Latest version : (Recommended)
 ``` Shell
 pip install git+https://github.com/sabarish-vm/unitconvert.git 
 ```
-## Old version v=x.y.z : Pip install from pypi
-
-``` Shell
-pip install numpy astropy
-pip install -i https://test.pypi.org/simple/ unitconvert-pkg==x.y.z
-```
-
-## Old version v=x.y.z : Pip install from git
+## Old version v=x.y.z : 
 After cloning or downloading the desired verion `x.y.z` do the following,  
 ``` Shell
 pip install numpy astropy
@@ -45,10 +37,9 @@ Support for custom unit systems ! The user can specify the set basis units, and 
 ## Changes from 0.2.1 to 0.2.2
 Included planck units ! 
 
-## Overview
+# Overview
  
 The package contains modules which will convert the desired units given as astropy.units.Quantity object to physical units like natural units, geometrized units, and cgs gaussian units. Here, natural units refer to the unit system where ℏ = *c* = *k*<sub>*B*</sub> = *ϵ*<sub>0</sub> = 1, geometrized units refer to *c* = *G* = 1, cgs gaussian refers to 4*π*ϵ<sub>0</sub> = 1
-
 
 ## Key Modules in unitconvert.natural 
 
@@ -80,7 +71,7 @@ Thus you will divide *m* by *c* <sup>-2</sup>, to get *m* *c* <sup>2</sup>. Simi
 
 Here there factor is just 1, thus we get the equation with restored constants as *E* = *m* *c*<sup>2</sup>
 
-## Geometrized, CGS Gaussian, and Planck  unit systems 
+## Geometrized, CGS Gaussian, and Planck unit systems 
 
 These unit systems are defined inside unitconvert.geometrized, unitconvert.gaussian, unitconvert.planck and they have similar named modules to that of unitconvert.natural, that is they contain toGeometrized, toGaussian, toPlanck, factorGeometrized, factorGaussian,factorPlanck, fromGeometrized, fromGaussian, fromPlanck. They can be imported as follows, 
 
@@ -94,7 +85,7 @@ For README of earlier versions please check the corresponding Package_0.x.y dire
 
 ## Changes from 0.1.x to 0.2.x
 
-The previous versions are obselete, and does not have enough functionality and a lot of bugs are fixed in this release. In the near future another major revision to 1.0.0 will be made which will have the option to work with custom unit systems. 
+The previous versions are obselete, and does not have enough functionality and a lot of bugs are fixed in this release. 
 
 ## Changes from 0.2.0 to 0.2.1 
 
