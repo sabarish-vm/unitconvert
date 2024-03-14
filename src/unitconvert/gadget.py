@@ -52,6 +52,7 @@ def fromGadget(q,finalUnits=None):
 
     Args :
             **q (astropy quantity)** : the quantity for which unit conversion must be done
+            
             **finalUnits** : optional argument to specify the units to which `q` must be converted. Defaults to standard astronomical units [kpc, solMass, Gyr] if not specified.
     
     Returns :
