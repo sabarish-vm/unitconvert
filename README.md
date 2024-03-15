@@ -18,6 +18,9 @@ pip install -e .
 # Units Convert Package
 The package contains modules which will convert the desired units given as astropy.units. Quantity object to physical units like natural units, geometrized units, and cgs gaussian units. Here, natural units refer to the unit system where ℏ = *c* = *k*<sub>*B*</sub> = *ϵ*<sub>0</sub> = 1, geometrized units refer to *c* = *G* = 1, cgs gaussian refers to 4*π*ϵ<sub>0</sub> = 1
 
+## What's new in 1.0.0 ?
+Check if the user defined custom-unit system makes sense using `unitconvert.custom.checksystem` function.
+
 ## What's new in 0.2.4 ?
 Transform units to any standard unit like cgs, si, astronomical. The desired target set must be specified as a list.
 

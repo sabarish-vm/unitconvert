@@ -1,32 +1,18 @@
 import astropy.units as u
 import astropy.constants as acon
-from sympy import symbols as symbols
-from collections import defaultdict
-from os.path import expanduser as userpath
-from os import getcwd
-from os import mkdir
-from os.path import join as joinpath
-from os.path import exists as isthere
+from unitconvert.getdimensions import getdim
+import numpy as np
 
-
-def getdim(q):
-    q = q.si.decompose()
-    q = q * 1
-    sb = q.unit.bases
-    sp = q.unit.powers
-    dictdim = defaultdict(lambda : 0)
-    for i in range(len(sb)):
-        dictdim[sb[i]] = sp[i]
-    return dictdim
-
-def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labels = []) :
+def create_units(constants, units, name , save = 'global' ,overwrite = 'no', labels = []) :
     '''
-    Creates a new unit system and saves them in current working directory or inside a global directory. This saved system can be accessed later.    
+    Creates a new unit system and saves them in current working directory or inside a global directory. This saved system can be accessed later. The target custom unit system has two parts. 
+    1) List of constants or units that needs to be set to 1
+    2) List of Remaining units
 
     Args :
-            **constants (list)** : A list of astropy constants that needs to be used as the basis unit or in other words the physical constants that needs to be set to 1.
+            **constants (list)** : A list of astropy constants / astropy units that is a part of the custom unit that needs to be set to 1.
 
-            **units (list)** : A list of astropy units in which the results must be returned in, to avoid ambiguity this must be passed by the user.
+            **units (list)** : A list of astropy units corresponding to the remanining units.
 
             **name (str)** The name of the unit system
         
@@ -39,7 +25,12 @@ def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labe
     Returns :
             None         
     '''
-
+    from sympy import symbols as symbols
+    from collections import defaultdict
+    from os.path import expanduser as userpath
+    from os import getcwd,mkdir
+    from os.path import join as joinpath
+    from os.path import exists as isthere
     from sympy.solvers.solveset import linsolve
 
     ## Check for existence of directories for saving unitsystems
@@ -60,12 +51,9 @@ def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labe
 
     si = {0 : u.kg , 1:  u.m , 2: u.s, 3 :u.Kelvin, 4 : u.A,5 : u.mol, 6: u.cd, 7: u.rad}
     targetunits = constants + units
-    
-    ## Save and add other SI units like mol, candela, radians
-    unitchecklist = [s.si.decompose() for s in targetunits]
-    if (u.mol in unitchecklist) == False : targetunits.append(u.mol) ; units.append(u.mol)
-    if (u.cd in unitchecklist) == False : targetunits.append(u.cd) ; units.append(u.cd)
-    if (u.rad in unitchecklist) == False : targetunits.append(u.rad) ; units.append(u.rad)
+    unused = checksystem(targetunits,want_details=True)['SI-unrelated']
+    units +=  unused
+    targetunits += unused
 
     if len(targetunits) != 8 :
         print('There is an inconsistency in the given set of constants, and units.  Please check !')
@@ -97,7 +85,6 @@ def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labe
         solns = eval(str(sol.args[0]))
         solncons = solns[0:(len(constants))]
         solnunits = solns[len(constants) :] 
-        print(solncons)
         temp = []
         for i in constants :
             try :
@@ -132,7 +119,7 @@ def create_units(constants, units, name , save = 'local' ,overwrite = 'no', labe
             f.write('#symbols for constants \n')
             f.write(str(labels))
 
-def load_units(name, save = 'local'):
+def load_units(name, save = 'global'):
     '''
     Loading saved unit system
 
@@ -150,6 +137,12 @@ def load_units(name, save = 'local'):
 
         **3)** function to returns the conversion factor
     '''
+    from sympy import symbols as symbols
+    from collections import defaultdict
+    from os.path import expanduser as userpath
+    from os import getcwd,mkdir
+    from os.path import join as joinpath
+    from os.path import exists as isthere
 
     if save == 'global' :
         path = joinpath(userpath('~'),'.unitconvert')
@@ -273,3 +266,66 @@ def load_units(name, save = 'local'):
         return factorlist
 
     return convert,convertback,getfactor
+
+def checksystem(ls,want_details=False):
+    """
+    Check if the user defined unit system can be transformed to and from SI units.
+
+    Args :
+        **ls (list)** : a list of astropy quantities belonging to the custom unit system
+
+        **want_details (boolean)** : if `True` returns details about the passed custom-unit system
+
+    Returns :
+        None : default
+        details (dictionary) : if `want_details` is set to `True`, inferred details about the passed custom-unit system
+
+
+    Example :
+        >>> from unitconvert.unitsystem import checksystem
+        >>> from astropy import units as u
+        >>> from astropy import constants as c
+        >>> checksystem([c.c]) # c.c = speed of light
+        <Error message>
+        >>> checksystem([c.c,u.m])
+        Custom-unit system looks good ! :) 
+    """
+
+    si = [u.s, u.m, u.kg, u.A, u.K, u.cd, u.mol, u.rad]
+
+    userUnits = ls
+    userUnits = [1*i for i in userUnits]
+
+    u2si = {i: getdim(i) for i in userUnits}
+
+    uDep = {j for i in userUnits for j in getdim(i).keys()}
+    uDep = [i for i in si if i in uDep]
+
+    unUsedSubSpace = [i for i in si if i not in uDep]
+
+
+    assert len(uDep) == len(userUnits), f'\nTo replace standard units \
+with the ones given,the dimensions should match. That is, n units from the \
+custom-unit system can replace exactly n replaceable-units from the standard \
+unit system.\nNumber[Custom-units]={len(userUnits)}, \
+\nNumber[replaceable-units]={len(uDep)},\
+\nCustom-units = {userUnits}, \nReplaceable-units = {uDep}\nThe easiest \
+solution is to add one of the replaceable units to the custom-units.\n'
+    dimSpace2 = len(unUsedSubSpace)
+    dimSpace1 = len(uDep)
+    mat1 = np.matrix([[u2si[j][i]*1.0 for j in userUnits] for i in uDep])
+    mat2 = np.mat(np.identity(len(unUsedSubSpace)))
+    mat = np.block([
+        [mat1, np.zeros((dimSpace1, dimSpace2))],
+        [np.zeros((dimSpace2, dimSpace1)), mat2]
+    ])
+
+    try:
+        mat.I
+        print("Custom-unit system looks good ! :) ")
+    except np.linalg.LinAlgError:
+        raise Exception("The unit system transformation matrix is singular \
+=> Degenerate units are given in custom-units ")
+    if want_details :
+        return {'Custom-units':userUnits,'SI-related':uDep,
+        'SI-unrelated':unUsedSubSpace}
