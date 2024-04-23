@@ -16,7 +16,8 @@ gM = u.def_unit('gM',1.989e43*u.g)
 gL = u.def_unit('gL',3.085678e21*u.cm)
 gV = u.def_unit('gV',1e5*u.cm/u.s)
 gT = u.def_unit('gT',3.085678e16*u.s)
-gG = 6.6743e-8*u.cm**3/u.g/u.s**2
+#A value of G = 6.6743e-8*u.cm**3/u.g/u.s**2 translates to the below given value
+gG = 43021.93132271094 * gL**3 / gM / gT**2
 
 def toGadget(q):
     """ 
