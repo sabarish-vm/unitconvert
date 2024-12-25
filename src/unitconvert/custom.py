@@ -314,7 +314,7 @@ solution is to add one of the replaceable units to the custom-units.\n'
     dimSpace2 = len(unUsedSubSpace)
     dimSpace1 = len(uDep)
     mat1 = np.matrix([[u2si[j][i]*1.0 for j in userUnits] for i in uDep])
-    mat2 = np.mat(np.identity(len(unUsedSubSpace)))
+    mat2 = np.matrix(np.identity(len(unUsedSubSpace)))
     mat = np.block([
         [mat1, np.zeros((dimSpace1, dimSpace2))],
         [np.zeros((dimSpace2, dimSpace1)), mat2]
