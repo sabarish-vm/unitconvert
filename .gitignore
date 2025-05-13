@@ -1,3 +1,7 @@
+# Unitconvert files
+*.dat
+*.mat
+
 # Sphinx Documentation
 docs/_build/
 
