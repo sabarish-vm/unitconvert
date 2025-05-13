@@ -4,12 +4,12 @@ import astropy.constants as acon
 
 
 def factorGeometrized(q):
-    """ 
-    Find the conversion factor that is used to convert the given quantity q to and from Geometrized units and SI units 
+    """
+    Find the conversion factor that is used to convert the given quantity q to and from Geometrized units and SI units
 
     Args :
             **q (astropy quantity)** : the quantity for which unit conversion must be done
-    
+
     Returns :
             **(dictionary)** : the conversion factor in terms of :math:`c, G`
 
@@ -25,16 +25,17 @@ def factorGeometrized(q):
     c = dimdict[u.s]
     d = dimdict[u.A]
     e = dimdict[u.K]
-    factorlist = { 'c' : 2*a - c , 'G' : -a }
+    factorlist = {"c": 2 * a - c, "G": -a}
     return factorlist
 
-def toGeometrized(q) :
+
+def toGeometrized(q):
     """
     Convert the given astropy quantity `q` in SI units to Geometrized units
 
     Args :
             **q (astropy quantity)** : the quantity which needs to be converted
-    
+
     Returns :
             **(astropy quantity)** : the input quantity `q` in geometrized units
 
@@ -54,16 +55,17 @@ def toGeometrized(q) :
     f = dimdict[u.cd]
     g = dimdict[u.mol]
     h = dimdict[u.rad]
-    factor = factor = acon.c**(2*a - c) * acon.G**(-a)
-    natqu = q/factor
+    factor = factor = acon.c ** (2 * a - c) * acon.G ** (-a)
+    natqu = q / factor
     lendim = getdim(natqu)[u.m]
-    try :
-        return natqu.to(u.m**lendim * u.A**d * u.K**e * u.cd**f * u.mol**g * u.rad**h )
-    except :
-        return 'Cannot Convert'
+    try:
+        return natqu.to(u.m**lendim * u.A**d * u.K**e * u.cd**f * u.mol**g * u.rad**h)
+    except:
+        return "Cannot Convert"
 
-def fromGeometrized(q,finalUnits) :
-    """ 
+
+def fromGeometrized(q, finalUnits):
+    """
     Convert the given astropy quantity `q` in geometrized units to SI units
 
     Args :
@@ -72,7 +74,7 @@ def fromGeometrized(q,finalUnits) :
             **finalUnits (astropy quantity)** : the base units to which quantity needs to be converted back.
 
             For instance both `meters` and `seconds` have the same units `eV` in Geometrized units. Therefore we need to specify the SI unit to which we need to convert it back to.
-    
+
     Returns :
             **(astropy quantity)** : the input quantity `q` in SI units
 
@@ -83,8 +85,8 @@ def fromGeometrized(q,finalUnits) :
             <Quantity 1. kg>
     """
     fac = factorGeometrized(finalUnits)
-    factor = acon.c**(fac['c']) * acon.G**(fac['G'])
-    try :
-        return (q*factor).to(finalUnits)
-    except :
-        return 'Cannot convert'
+    factor = acon.c ** (fac["c"]) * acon.G ** (fac["G"])
+    try:
+        return (q * factor).to(finalUnits)
+    except:
+        return "Cannot convert"
