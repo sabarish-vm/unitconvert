@@ -1,3 +1,4 @@
+![CI](https://github.com/sabarish-vm/unitconvert/actions/workflows/test.yml/badge.svg)
 # Installation instructions
 
 ## Latest version : (Recommended)
