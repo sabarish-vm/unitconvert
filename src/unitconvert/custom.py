@@ -6,7 +6,7 @@ import math
 from unitconvert.defaults import si
 
 
-def create_units(constants, units, name, save="global", overwrite="no", labels=[]):
+def create_units(constants, units, save=None, name=None, overwrite="no", labels=[]):
     """
     Creates a new unit system and saves them in current working directory or inside a global directory.
     This saved system can be accessed later. The target custom unit system has two parts.
@@ -14,9 +14,9 @@ def create_units(constants, units, name, save="global", overwrite="no", labels=[
     2) List of Remaining units
 
     Args :
-            **constants (list)** : A list of astropy constants / astropy units that is a part of the custom unit that needs to be set to 1.
+            **constants (list)** : A list of astropy quantities that is a part of the custom unit that needs to be set to 1.
 
-            **units (list)** : A list of astropy units corresponding to the remanining units.
+            **units (list)** : A list of astropy quantities corresponding to the remanining units.
 
             **name (str)** The name of the unit system
 
@@ -36,24 +36,6 @@ def create_units(constants, units, name, save="global", overwrite="no", labels=[
     from os.path import join as joinpath
     from os.path import exists as isthere
 
-    ## Check for existence of directories for saving unitsystems
-    if save == "global":
-        path = joinpath(userpath("~"), ".unitconvert")
-        if isthere(path) is False:
-            mkdir(path)
-    elif save == "local":
-        path = getcwd()
-    else:
-        path = getcwd()
-        print("saving to current working directory")
-
-    ## Check for pre-existence of already saved unitsystems
-    if overwrite != "yes" and isthere(joinpath(path, ".unit_" + name + ".dat")) is True:
-        print(
-            "Unit system system already exists ! \nPlease use a different name or set the overwrite option to yes. i.e. create_units(...., overwrite = 'yes')"
-        )
-        return
-
     targetunits = constants + units
     unitsysdetails = checksystem(targetunits)
     unused = unitsysdetails["SI-unrelated"]
@@ -61,55 +43,89 @@ def create_units(constants, units, name, save="global", overwrite="no", labels=[
     targetunits += unused
     si_basis = unitsysdetails["SI-related"] + unitsysdetails["SI-unrelated"]
 
-    if len(targetunits) != 8:
-        print(
-            "There is an inconsistency in the given set of constants, and units.  Please check !"
-        )
-
+    if save is None:
+        pass
     else:
-        temp = []
-        for i in constants:
-            try:  # inbuilt abbrev for the constant
-                temp.append(i.abbrev)
-            except AttributeError:  # random composite quantity
-                try:
-                    temp.append((i.value, i.unit.to_string()))
-                except AttributeError:  # astropy def.quantity
-                    temp.append(((1 * i).si.value, (1 * i).si.unit.to_string()))
-
-        temp2 = []
-        for i in units_all:
-            try:
-                temp2.append(i.to_string())
-            except AttributeError:
-                temp2.append(i.to_string())
-        temp3 = []
-        for i in si_basis:
-            try:
-                temp3.append(i.abbrev)
-            except AttributeError:
-                temp3.append(i.to_string())
-
-        if labels == []:
-            for i in constants:
-                try:
-                    labels.append(i.abbrev)
-                except AttributeError:
-                    labels.append(i.to_string())
-
-        with open(joinpath(path, ".unit_" + name + ".dat"), "w") as f:
-            f.write("#constants \n")
-            f.write(str(temp) + "\n")
-            f.write("#units \n")
-            f.write(str(temp2) + "\n")
-            f.write("#symbols for constants \n")
-            f.write(str(labels) + "\n")
-            f.write("#si-basis \n")
-            f.write(str(temp3) + "\n")
-
-        np.savetxt(
-            joinpath(path, ".unit" + name + ".mat"), unitsysdetails["Matrix-U_SI"]
+        assert name is not None, (
+            "name must be given if the user wants to save it to the disk"
         )
+        ## Check for existence of directories for saving unitsystems
+        if save == "global":
+            path = joinpath(userpath("~"), ".unitconvert")
+            if isthere(path) is False:
+                mkdir(path)
+        elif save == "local":
+            path = getcwd()
+        else:
+            path = getcwd()
+            print("saving to current working directory")
+        ## Check for pre-existence of already saved unitsystems
+        if (
+            overwrite != "yes"
+            and isthere(joinpath(path, ".unit_" + name + ".dat")) is True
+        ):
+            print(
+                "Unit system system already exists ! \nPlease use a different name or set the overwrite option to yes. i.e. create_units(...., overwrite = 'yes')"
+            )
+            return
+
+        if len(targetunits) != 8:
+            print(
+                "There is an inconsistency in the given set of constants, and units.  Please check !"
+            )
+
+        else:
+            temp = []
+            for i in constants:
+                try:  # inbuilt abbrev for the constant
+                    temp.append(i.abbrev)
+                except AttributeError:  # random composite quantity
+                    try:
+                        temp.append((i.value, i.unit.to_string()))
+                    except AttributeError:  # astropy def.quantity
+                        temp.append(((1 * i).si.value, (1 * i).si.unit.to_string()))
+
+            temp2 = []
+            for i in units_all:
+                try:
+                    temp2.append(i.to_string())
+                except AttributeError:
+                    temp2.append(i.to_string())
+            temp3 = []
+            for i in si_basis:
+                try:
+                    temp3.append(i.abbrev)
+                except AttributeError:
+                    temp3.append(i.to_string())
+
+            if labels == []:
+                for i in constants:
+                    try:
+                        labels.append(i.abbrev)
+                    except AttributeError:
+                        labels.append(i.to_string())
+
+            with open(joinpath(path, ".unit_" + name + ".dat"), "w") as f:
+                f.write("#constants \n")
+                f.write(str(temp) + "\n")
+                f.write("#units \n")
+                f.write(str(temp2) + "\n")
+                f.write("#symbols for constants \n")
+                f.write(str(labels) + "\n")
+                f.write("#si-basis \n")
+                f.write(str(temp3) + "\n")
+
+            np.savetxt(
+                joinpath(path, ".unit" + name + ".mat"), unitsysdetails["Matrix-U_SI"]
+            )
+
+    mat_u_si = unitsysdetails["Matrix-U_SI"]
+    convert, convertback, getfactor, mat_u_si = __setup_unit_fxns(
+        constants, units, mat_u_si, si_basis
+    )
+    print(f"Target units = {targetunits}")
+    print(f"SI units = {si_basis}")
+    return convert, convertback, getfactor, mat_u_si
 
 
 def load_units(name, save="global"):
@@ -177,9 +193,13 @@ def load_units(name, save="global"):
                 si_basis.append(u.Quantity(unit=unit_temp, value=value))
     mat_u_si = np.genfromtxt(joinpath(path, ".unit" + name + ".mat"))
 
-    targetunits = constants + units
+    convert, convertback, getfactor, mat_u_si = __setup_unit_fxns(
+        constants, units, mat_u_si, si_basis
+    )
+    return convert, convertback, getfactor, mat_u_si
 
-    # return constants,units,solncons,solnunits
+
+def __setup_unit_fxns(constants: list[u.Quantity], units, mat_u_si, si_basis):
     def convfactor(q):
         dimdict = getdim(q)
         si_powers = np.array([dimdict[i] for i in si_basis])
@@ -233,12 +253,11 @@ def load_units(name, save="global"):
         q : astropy.quantitiy
             The instance of the class astropy quantity for which the conversion factor to the new units is required
         """
-
-        factor = 1
-        returnunits = 1
-        _, _, sip, cup = convfactor(q)
+        targetunits = constants + units
+        _, _, _, cup = convfactor(q)
         factorlist = {
-            targetunits[id].unit.to_string(): cup[id] for id in range(len(targetunits))
+            (1.0 * targetunits[id]).unit.to_string(): cup[id]
+            for id in range(len(targetunits))
         }
         return factorlist
 
@@ -314,3 +333,50 @@ solution is to add one of the replaceable units to the custom-units.\n"
         "SI-related": uDep,
         "SI-unrelated": unUsedSubSpace,
     }
+
+
+class UnitSystem:
+    def __init__(self, params):
+        convert, convertback, _, _ = create_units(params["constants"], params["units"])
+        self.__conv__ = convert
+        self.__convback__ = lambda q, f: convertback(q, f)
+
+        self.L = self.equivalent_unit(u.m)
+        self.M = self.equivalent_unit(u.kg)
+        self.T = self.equivalent_unit(u.s)
+        self.Energy = self.equivalent_unit(u.J)
+        self.Den = self.M / self.L**3
+        self.Speed = self.L / self.T
+        self.Lum = self.equivalent_unit(u.solLum)
+        self.CrossSection = self.L**2 / self.M
+        self.Force = self.equivalent_unit(u.Newton)
+        self.Acceleration = self.L / self.T**2
+        self.Power = self.Energy / self.T
+        self.Pressure = self.Force / self.L**2
+        self.Momentum = self.M * self.Speed
+
+    def from_another(self, q):
+        """
+        Convert from another unit system to the unit system of the instantitated object.
+        """
+        return self.__conv__(q)
+
+    def to_another(self, q, f):
+        """
+        Convert `q` from unit system of the instantiated object to the units f.
+        Note that dimensions of `f` must match that of `q`
+        """
+        return self.__convback__(q, f)
+
+    def from_another_value(self, q):
+        """
+        Convert from another unit system to the unit system of the instantitated object
+        and return on the numerical value.
+        """
+        return (self.from_another(q)).value
+
+    def equivalent_unit(self, q):
+        """
+        Find the equivalent unit of the passed quantity in the unit system of the instantiated object.
+        """
+        return self.from_another(1.0 * q)
