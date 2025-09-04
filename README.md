@@ -20,27 +20,7 @@ pip install -e .
 The package contains modules which will convert the desired units given as astropy.units. Quantity object to physical units like natural units, geometrized units, and cgs gaussian units. Here, natural units refer to the unit system where ℏ = *c* = *k*<sub>*B*</sub> = *ϵ*<sub>0</sub> = 1, geometrized units refer to *c* = *G* = 1, cgs gaussian refers to 4*π*ϵ<sub>0</sub> = 1
 
 ## What's new in 1.0.0 ?
-Check if the user defined custom-unit system makes sense using `unitconvert.custom.checksystem` function.
 
-## What's new in 0.2.4 ?
-Transform units to any standard unit like cgs, si, astronomical. The desired target set must be specified as a list.
-
-Example :
-
-    >>> from unitconvert.unitsystem import toSystem
-    >>> from astropy import units as u
-    >>> toSystem(1 * u.pc *u.A,[u.kpc,u.solMass,u.yr])
-    <Quantity 0.001 A kpc>
-
-## What's new in 0.2.3 ?
-Included units used in the $N$-body code `GADGET-2`.
-
-## Changes from 0.2.2 to 0.2.3
-
-Support for custom unit systems ! The user can specify the set basis units, and conversions from and to this system can be done using the functions `create_units`, and `load_units`
-
-## Changes from 0.2.1 to 0.2.2
-Included planck units ! 
 
 # Overview
 ## Example
@@ -80,15 +60,4 @@ These unit systems are defined inside unitconvert.geometrized, unitconvert.gauss
     from unitconvert.gaussian import *
     from unitconvert.planck import *
 
-# README for the version 0.2.x 
-
-For README of earlier versions please check the corresponding Package_0.x.y directory
-
-## Changes from 0.1.x to 0.2.x
-
-The previous versions are obselete, and does not have enough functionality and a lot of bugs are fixed in this release. 
-
-## Changes from 0.2.0 to 0.2.1 
-
-Fixed a small inconsistency with astropy, which led to errors while getting the dimensions of the charge of an electron.
-
+## Custom unit systems support from verision>1.0.0
